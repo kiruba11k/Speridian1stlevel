@@ -82,9 +82,9 @@ Structure:
 1. "Hi {{first_name}},"
 2. Reference the prospect’s background (company, role, or focus) based on: {state['prospect_background']}
 3. Pivot to a relevant banking workflow/operations discussion (e.g., lending, commercial loan process automation, digital banking, or regional banking strategies).
-4. Close with "Cheers, {my_name}"
+4.Avoid these kind of flattery words  exploring,  interested,  learning, No easy feat, Impressive, Noteworthy, Remarkable, Fascinating, Admiring, Inspiring, No small feat, No easy task, Stood out
+5. Close with "Cheers, {my_name}"
 
-Avoid flattery words like: exploring, impressed, remarkable, noteworthy, inspiring, fascinating, admiring, no easy feat, stood out.
 
 Examples for tone:
 "Hi Michael, 
@@ -119,22 +119,14 @@ Hi {prospect_first_name},"""
                 message = message.split("\n", 1)[-1].strip()
 
         # Ensure connection note is present
-        connection_phrases = ["look forward", "would be great", "hope to connect", "love to connect", "looking forward"]
-        if not any(phrase in message.lower() for phrase in connection_phrases):
-            # Add connection note if missing
-            message += "\nI'll be there too & looking forward to catching up with you at the event."
-        if state['company'].lower() not in message.lower():
-            # Add company mention if missing
-            message = message.replace(
-                f"Hi {prospect_first_name},",
-                f"Hi {prospect_first_name},\nI see that you will be attending  {state.get('event_name', '')}.",
-                1
-            )
-
+        # connection_phrases = ["look forward", "would be great", "hope to connect", "love to connect", "looking forward"]
+        # if not any(phrase in message.lower() for phrase in connection_phrases):
+        #     # Add connection note if missing
+        #     message += "\nI'll be there too & looking forward to catching up with you at the event."
             
-        if message.count(f"Best, {my_name}") > 1:
-            parts = message.split(f"Best, {my_name}")
-            message = parts[0].strip() + f"\n\nBest, {my_name}"
+        # if message.count(f"Best, {my_name}") > 1:
+        #     parts = message.split(f"Best, {my_name}")
+        #     message = parts[0].strip() + f"\n\nBest, {my_name}"
 
         return {**state, "final_message": message}
     except Exception as e:

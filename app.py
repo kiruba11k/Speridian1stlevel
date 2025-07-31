@@ -10,7 +10,6 @@ class ProspectMessageState(TypedDict):
     company: Optional[str]
     industry: Optional[str]
     prospect_background: str
-    my_background: Optional[str]
     final_message: Optional[str]
 
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]    
@@ -53,7 +52,7 @@ def summarize_backgrounds(state: ProspectMessageState) -> ProspectMessageState:
     return {
         **state,
         "prospect_background": summarizer(state["prospect_background"]),
-        "my_background": summarizer(state["my_background"])
+        # "my_background": summarizer(state["my_background"])
     }
 
 import re
@@ -164,7 +163,6 @@ with st.form("prospect_form"):
     company = st.text_input("Company", "")
     industry = st.text_input("Industry", "")
     prospect_background = st.text_area("Prospect Background", "Prospect professional background goes here...")
-    my_background = st.text_area("Your Background", "Your professional background goes here...")
 
     submitted = st.form_submit_button("Generate Message")
 
@@ -176,7 +174,6 @@ if submitted:
             "company": company,
             "industry": industry,
             "prospect_background": prospect_background,
-            "my_background": my_background,
 
         }
         result = graph1.invoke(initial_state)

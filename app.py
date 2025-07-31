@@ -162,9 +162,9 @@ st.title(" First Level Msgs for Speridian")
 
 with st.form("prospect_form"):
     prospect_name = st.text_input("Prospect Name", "")
-    designation = st.text_input("Designation", "")
-    company = st.text_input("Company", "")
-    industry = st.text_input("Industry", "")
+    designation =""
+    company = ""
+    industry =""
     prospect_background = st.text_area("Prospect Background", "Prospect professional background goes here...")
 
     submitted = st.form_submit_button("Generate Message")

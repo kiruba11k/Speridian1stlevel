@@ -70,7 +70,6 @@ def generate_message(state: ProspectMessageState) -> ProspectMessageState:
     extracted_name = extract_name_from_background(state['prospect_background'])
     prospect_first_name = extracted_name.split()[0] if extracted_name != "Unknown Prospect" else "there"
     my_name = "Joseph"  # Hardcoded for consistency
-
     prompt = f"""
 IMPORTANT: Output ONLY the message itself. 
 Do NOT include explanations, labels, or introductions.
@@ -78,22 +77,18 @@ Do NOT include explanations, labels, or introductions.
 Write a SHORT LinkedIn connection note (MAX 3 LINES, under 300 characters).  
 Tone: professional, conversational, concise.
 
-Structure:
-1. "Hi {{first_name}},"
-2. Reference the prospect’s background (company, role, or focus) based on: {state['prospect_background']}
-3. Pivot to a relevant banking workflow/operations discussion (e.g., lending, commercial loan process automation, digital banking, or regional banking strategies).
-4.Avoid these kind of flattery words  exploring,  interested,  learning, No easy feat, Impressive, Noteworthy, Remarkable, Fascinating, Admiring, Inspiring, No small feat, No easy task, Stood out
-5. Close with "Cheers, {my_name}"
+MANDATORY RULES:
+1. Start with: "Hi {{first_name}},"
+2. The SECOND LINE must begin with "Glad to be connected." (Do not skip this)
+3. Then reference the prospect’s background (company, role, or focus) based on: {state['prospect_background']}
+4. Pivot to a relevant banking workflow/operations discussion (e.g., lending, commercial loan process automation, digital banking, or regional banking strategies).
+5. Avoid these words entirely: exploring, interested, learning, no easy feat, impressive, noteworthy, remarkable, fascinating, admiring, inspiring, no small feat, no easy task, stood out.
+6. Close with "Cheers, {my_name}"
 
-
-Examples for tone:
-"Hi Michael, 
-Glad to be connected. Your work in both banking and public infrastructure is shaping meaningful momentum in McKinney. Would love to exchange thoughts on how local lending teams are streamlining workflows—open to a quick chat sometime? 
-Cheers, Joseph"
-
-"Hi Kelly, 
-Thanks for connecting. Always interesting to see how regional banks like Northrim are navigating lending operations at scale. Would enjoy trading notes on what’s evolving in commercial loan process automation—open to a brief chat sometime? 
-Cheers, Joseph"
+Example format (keep this exact structure):
+Hi Michael,
+Glad to be connected. Your work in both banking and public infrastructure is shaping meaningful momentum in McKinney. Would love to exchange thoughts on how local lending teams are streamlining workflows—open to a quick chat sometime?
+Cheers, Joseph
 
 Now create for:
 Prospect: {state['prospect_name']} ({state['designation']} at {state['company']})
@@ -102,6 +97,9 @@ Key Highlight: {state['prospect_background']}
 
 Message (MAX 2-3 LINES within 250 chars - follow the pattern above):
 Hi {prospect_first_name},"""
+
+    
+    
 
     try:
         response = groq_llm(prompt, temperature=0.7)
@@ -127,6 +125,19 @@ Hi {prospect_first_name},"""
         # if message.count(f"Best, {my_name}") > 1:
         #     parts = message.split(f"Best, {my_name}")
         #     message = parts[0].strip() + f"\n\nBest, {my_name}"
+        if "Glad to be connected" not in message:
+            lines = message.split("\n")
+            if len(lines) > 1:
+                lines.insert(1, "Glad to be connected.")
+            else:
+                message = f"{lines[0]}\nGlad to be connected."
+            message = "\n".join(lines)
+
+# Strip forbidden flattery words if the model sneaks them in
+        for word in ["exploring", "interested", "learning", "impressive", "noteworthy", "remarkable", 
+             "fascinating", "admiring", "inspiring", "no small feat", "no easy task", "stood out"]:
+            message = re.sub(rf"\b{word}\b", "", message, flags=re.IGNORECASE).strip()
+
 
         return {**state, "final_message": message}
     except Exception as e:

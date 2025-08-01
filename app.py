@@ -82,8 +82,17 @@ MANDATORY RULES:
 2. The SECOND LINE must begin with "Glad to be connected." (Do not skip this)
 3. Then reference the prospect’s background (company, role, or focus) based on: {state['prospect_background']}
 4. Pivot to a relevant banking workflow/operations discussion (e.g., lending, commercial loan process automation, digital banking, or regional banking strategies).
-5. Avoid these words entirely: exploring, interested, learning, no easy feat, impressive, noteworthy, remarkable, fascinating, admiring, inspiring, no small feat, no easy task, stood out.
-6. Close with "Cheers, {my_name}"
+5. For the FOURTH LINE, dynamically craft a unique, concise sentence inviting a brief chat.  
+   Style examples:  
+   - "It would be great to have a chat sometime about how these trends are evolving in the industry."  
+   - "Would love to hear your thoughts on how automation is shaping operations."  
+   - "Are you open to a quick chat sometime?"  
+   - "I'd love to exchange ideas on how technology is driving real change in mortgage operations."
+6. End with a warm, professional closing (default: "Cheers, {my_name}").  
+   Alternative closings like "Best," or "Regards," are fine but must include your name: {my_name}.
+7. Avoid these words entirely: exploring, interested, learning, no easy feat, impressive, noteworthy, remarkable, fascinating, admiring, inspiring, no small feat, no easy task, stood out.
+
+
 
 Example format (keep this exact structure):
 Hi Michael,

@@ -167,7 +167,7 @@ graph1 = workflow.compile()
 # Streamlit UI
 # =====================
 st.set_page_config(page_title="LinkedIn Message Generator", layout="centered")
-st.title(" First Level Msgs for Speridian")
+st.title("Msgs for Speridian")
 
 with st.form("prospect_form"):
     prospect_name = st.text_input("Prospect Name", "")
